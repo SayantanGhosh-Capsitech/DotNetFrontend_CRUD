@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Radio, Select, InputNumber } from "antd";
 import API from "../api/api";
 import type { Student } from "../types/StudentType";
+import type { Course } from "../types/CourseType";
 
 const formItemLayout = {
   labelCol: {
@@ -18,7 +19,21 @@ type Props = {
   onStudentAdded: () => void;
 };
 
-const StudentForm: React.FC <Props> = ({ onStudentAdded }) => {
+const StudentForm: React.FC<Props> = ({ onStudentAdded }) => {
+  const [courseName, setCourseName] = useState<Course[] | null>(null);
+
+  useEffect(() => {
+    const coursedata = async () => {
+      try {
+        const result = await API.get("/Course");
+        setCourseName(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    coursedata();
+  }, []);
+
   const [form] = Form.useForm();
 
   const onFinish = async (values: Student) => {
@@ -26,7 +41,7 @@ const StudentForm: React.FC <Props> = ({ onStudentAdded }) => {
     try {
       const response = await API.post("/students", values);
       // alert("Data Saved");
-      onStudentAdded(); 
+      onStudentAdded();
       form.resetFields();
       console.log("Data posted as", response.data);
     } catch (err) {
@@ -75,12 +90,11 @@ const StudentForm: React.FC <Props> = ({ onStudentAdded }) => {
           rules={[{ required: true, message: "Please select Course!" }]}
         >
           <Select placeholder="select your course" mode="multiple">
-            <Option value="javafullstack">Java Full Stack</Option>
-            <Option value="backend">Backend Dev</Option>
-            <Option value="devops">Devops</Option>
-            <Option value="frontend">Frontend Dev</Option>
-            <Option value="aiml">AI/ML/GenAI</Option>
-            <Option value="other">Other</Option>
+            {courseName?.map((type) => (
+              <Option key={type.id} value={type.id}>
+                {type.name}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
 

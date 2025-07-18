@@ -13,7 +13,7 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Fetch data
+  // Fetch data 
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -67,7 +67,6 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
       console.error("Failed to update student:", error);
     }
   };
-
   return (
     <>
       <Flex wrap gap="middle" style={{ margin: "20px" }} justify="center">
@@ -85,13 +84,12 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
                   <DeleteOutlined />
                 </Button>
               </Flex>
-
               <p>Name: {value.name}</p>
               <p>Gender: {value.gender}</p>
               <p>Age: {value.age}</p>
               <p>Graduated: {value.isGraduated === true ? "Yes" : "No"}</p>
               <p>
-                Courses:{" "}
+                Courses:
                 {Array.isArray(value.courses)
                   ? value.courses.join(", ")
                   : value.courses}
@@ -105,7 +103,7 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
         )}
       </Flex>
 
-      {/* Edit Modal----------------------------------------------- */}
+      {/* Edit Modal-------------------------------------------------*/}
       <Modal
         title="Edit Student"
         open={isModalVisible}
