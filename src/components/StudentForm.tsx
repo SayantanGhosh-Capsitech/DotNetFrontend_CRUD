@@ -57,7 +57,6 @@ const StudentForm: React.FC<Props> = ({ onStudentAdded }) => {
         onFinish={onFinish}
         variant="underlined"
         style={{ maxWidth: 600 }}
-        //   initialValues={{ variant: 'filled' }}
       >
         <p
           style={{ textAlign: "center", fontSize: "20px", fontWeight: "bold" }}

@@ -48,7 +48,6 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
 
     const updatedStudent = { ...editingStudent, ...values };
 
-    // Fix courses if string
     if (updatedStudent.courses && typeof updatedStudent.courses === "string") {
       updatedStudent.courses = (updatedStudent.courses as string)
         .split(",")
