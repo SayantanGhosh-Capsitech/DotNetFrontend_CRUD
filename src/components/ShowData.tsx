@@ -138,7 +138,7 @@ const ShowData: React.FC = () => {
           <Form.Item label="Select" style={{ maxWidth: 700 }}>
             <Select
               onChange={handleForm}
-              value={ShowData ? "student" : "course"}
+              // value={ShowData ? "student" : "course"}
               placeholder="Please select an option"
             >
               <Select.Option value="course">Course Name</Select.Option>
