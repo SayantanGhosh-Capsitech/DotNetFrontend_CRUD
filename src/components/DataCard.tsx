@@ -13,13 +13,13 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
   const [formdata, setFormdata] = useState<Student[] | null>(null);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [refreshUpdate, setRefreshUpdate] = useState(false);
 
   const [form] = Form.useForm();
   // const { Option } = Select;
 
-  const [allCourses, setAllCourses] = useState<Course[]>([]); // <-- Add this
+  const [allCourses, setAllCourses] = useState<Course[]>([]); 
 
-  // Fetch all courses once when component mounts
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -37,7 +37,7 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
       form.setFieldsValue({
         ...editingStudent,
         courses: Array.isArray(editingStudent.courseDetail)
-          ? editingStudent.courseDetail.map((c) => c.id) // <-- course IDs here
+          ? editingStudent.courseDetail.map((c) => c.id)
           : [],
       });
     }
@@ -54,7 +54,7 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
       }
     };
     fetchdata();
-  }, [refresh]);
+  }, [refresh,refreshUpdate]);
 
   // Delete function ------------------------------------
   const handleDelete = async (id?: string) => {
@@ -73,7 +73,6 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
     setEditingStudent(student);
     setIsModalVisible(true);
   };
-
   const onFinish = async (values: Partial<Student>) => {
     if (!editingStudent?.id) return;
     console.log("Updating student:", values);
@@ -84,11 +83,6 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
       ...values,
       courses: values.courses, 
     };
-    // if (updatedStudent.courses && typeof updatedStudent.courses === "string") {
-    //   updatedStudent.courses = (updatedStudent.courses as string)
-    //     .split(",")
-    //     .map((c) => c.trim());
-    // }
     try {
       await API.put(`/Students/${editingStudent.id}`, updatedStudent);
       setFormdata((prev) =>
@@ -98,6 +92,7 @@ const DataCard: React.FC<Props> = ({ refresh }) => {
       );
       setIsModalVisible(false);
       setEditingStudent(null);
+      setRefreshUpdate(!refreshUpdate); 
     } catch (error) {
       console.error("Failed to update student:", error);
     }
